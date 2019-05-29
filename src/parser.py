@@ -69,7 +69,7 @@ def parse():
     for src1 in tmp:
         cleanedList.append(src1.get_text())
 
-    del cleanedList[:6]
+    del cleanedList[:7]
 
     # SQL로 넘긴다!
     queryToSQL(cleanedList)
