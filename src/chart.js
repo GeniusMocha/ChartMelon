@@ -9,12 +9,11 @@ const pool = mariadb.createPool({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "",
+  password: "mocha00",
   database: "melonchart"
 });
 
 let sendData = [];
-let forEachCount = 0;
 
 function parseFromDB() {
   // BUG: F5를 연타할 시 파이썬단 로딩이 느려 명령이 마쳐지기 전
