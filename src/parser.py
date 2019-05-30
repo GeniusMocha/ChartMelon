@@ -10,7 +10,7 @@ def queryToSQL(listedChart):
     sql = pymysql.connect(host='localhost', port=3306, user="root",
                          passwd="mocha00", charset="utf8", autocommit=True)
  
-    # 잘 모르겠지만 커서 메소드를 이용해 커넥트 후 SQL 명령어 쿼리를 내릴 커서를 준비하는듯.
+    # 잘 모르겠지만 커넥트 후 SQL 명령어 쿼리를 내릴 커서를 준비하는듯.
     # 일단 SQL은 처음 다루니 조심스럽게..(?)
     cursor = sql.cursor()
  
