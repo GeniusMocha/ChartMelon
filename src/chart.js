@@ -26,9 +26,7 @@ function parseFromDB() {
       conn
         .query("select * from chartmelon")
         .then(rows => {
-          for (let i = 0; i < 100; i++) {
-            sendData = rows;
-          }
+          sendData = rows;
         })
         .then(res => {
           conn.end();
