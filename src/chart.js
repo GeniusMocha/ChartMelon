@@ -52,6 +52,10 @@ function parseFromDB() {
     mycalled.function().getfuncfunction(val => {
       // Code It!
     });
+
+    arr.forEach(noMean => {
+      // For문 돌려보기
+    });
      */
 }
 
