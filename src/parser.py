@@ -54,15 +54,11 @@ def parse():
     # Tag : div in ellipsis
     coreList = soup.find_all("div", {"class" : "ellipsis"})
 
-    tmp = []
     cleanedList = []
 
     # 필요 없는 인자 제거
     for src in coreList:
-        tmp.append(src.find("a"))
-
-    for src1 in tmp:
-        cleanedList.append(src1.get_text())
+        cleanedList.append(src.find("a").get_text())
 
     del cleanedList[:6]
 
