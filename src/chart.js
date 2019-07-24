@@ -1,6 +1,10 @@
 const express = require("express");
 const app = express();
-const { PythonShell } = require("python-shell");
+const fs = require("fs");
+const {
+  PythonShell
+} = require("python-shell");
+const path = require("path");
 const mariadb = require("mariadb");
 
 const server = app.listen(8000, checkServer);
@@ -41,20 +45,6 @@ function parseFromDB() {
       // 커넥션 실패 시 catch
       console.log(err);
     });
-  /* 
-    mycalled.function().getfuncfunction(function (val) {
-      // Code It!
-    });
-    then과 같은 함수를 인자로 받는 함수(getfuncfunction)가 있을 때,
-    이렇게 이해가 됨.
-    mycalled.function().getfuncfunction(val => {
-      // Code It!
-    });
-
-    arr.forEach(noMean => {
-      // For문 돌려보기
-    });
-     */
 }
 
 function pyCallBack(err, stdout) {
@@ -72,7 +62,18 @@ function checkServer() {
 
 function init() {
   PythonShell.run("parser.py", null, pyCallBack);
-  app.get("/", svCallBack);
+
+  app.use(express.static(path.join(__dirname, '/')));
+
+  app.get("/thisisparserapi", svCallBack);
+  app.get('/', (req, res) => {
+    fs.readFile("index.html", (error, data) => {
+      res.writeHead(200, {
+        "Content-Type": "text/html"
+      });
+      res.end(data);
+    })
+  });
 }
 init();
 setInterval(init, 36000);

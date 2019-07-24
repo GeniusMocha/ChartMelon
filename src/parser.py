@@ -7,18 +7,16 @@ import pymysql
 
 def queryToSQL(listedChart):
     # DB 접속
-    sql = pymysql.connect(host='localhost', port=3306, user="root",
-                         passwd="mocha00", charset="utf8", autocommit=True)
- 
-    # 잘 모르겠지만 커넥트 후 SQL 명령어 쿼리를 내릴 커서를 준비하는듯.
-    # 일단 SQL은 처음 다루니 조심스럽게..(?)
+    sql = pymysql.connect( host='localhost', port=3306, user="root",
+                           passwd="mocha00", charset="utf8", autocommit=True )
+    # 커서 준비
     cursor = sql.cursor()
  
     # (대충 실행을 execute() 함수로 한다는 설명)
     try:
         cursor.execute("create database MelonChart;")
-    except pymysql.err.ProgrammingError:   # 대충 예외처리.. 배우면서 합시다!
-        print("\nDB is Already Exist")     # log 보면서 예외처리 하니까 잘 되네..
+    except pymysql.err.ProgrammingError:   # 대충 예외처리..
+        print("\nDB is Already Exist")
         print("Keep Going Next Part!\n")
         cursor.execute("use melonchart;")
         cursor.execute("drop table chartmelon;")  # 함수가 여러번 실행된다면 행이 무한으로 늘어남
@@ -36,10 +34,10 @@ def queryToSQL(listedChart):
     )
 
     for i in range(0, 300, 3):
-        ## if (corsor.exe)
-        cursor.execute("INSERT INTO chartmelon"
-        " ( name, artist, album ) "
-        "VALUES ( '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2])
+        cursor.execute(
+            "INSERT INTO chartmelon"
+            " ( name, artist, album ) "
+            "VALUES ( '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2])
         )
 
     # connect() 후 close()로 연결 종료.
