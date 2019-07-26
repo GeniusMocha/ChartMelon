@@ -8,3 +8,5 @@
 2. Iconv-Lite
 3. Mariadb
 4. Python-Shell
+5. Path
+6. Fs
