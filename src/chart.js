@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const cors = require("cors");
 const {
   PythonShell
 } = require("python-shell");
@@ -64,6 +65,7 @@ function init() {
   PythonShell.run("parser.py", null, pyCallBack);
 
   app.use(express.static(path.join(__dirname, '/')));
+  app.use(cors());
 
   app.get("/thisisparserapi", svCallBack);
   app.get('/', (req, res) => {

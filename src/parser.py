@@ -26,17 +26,18 @@ def queryToSQL(listedChart):
     
     ## TODO: 각 쿼리문 설명 달기
     cursor.execute(
-        "CREATE TABLE chartmelon(_id INT AUTO_INCREMENT PRIMARY KEY,"
+        "CREATE TABLE chartmelon(_id INT AUTO_INCREMENT PRIMARY KEY,"  
+        " img VARCHAR(1000),"      
         " name VARCHAR(1000) NOT NULL,"
         " artist VARCHAR(1000) DEFAULT 'Unknown',"
         " album VARCHAR(1000)) ENGINE=INNODB;"
     )
 
-    for i in range(0, 300, 3):
+    for i in range(0, 400, 4):
         cursor.execute(
             "INSERT INTO chartmelon"
-            " ( name, artist, album ) "
-            "VALUES ( '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2])
+            " ( img, name, artist, album ) "
+            "VALUES ( '%s', '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2], listedChart[i + 3])
         )
 
     sql.close()
@@ -52,15 +53,25 @@ def parse():
     soup = BeautifulSoup(res.text, 'lxml')
 
     # Tag : div in ellipsis
-    coreList = soup.find_all("div", {"class" : "ellipsis"})
+    songList = soup.find_all("div", {"class" : "ellipsis"})
+    imgList = soup.find_all("img", {"src" : True})
 
     cleanedList = []
+    cleanedImgList = []
+
+    del imgList[:26]
+    for srcc in imgList:
+        cleanedImgList.append(srcc['src'])
+    del cleanedImgList[100:]
 
     # 필요 없는 인자 제거
-    for src in coreList:
+    for src in songList:
         cleanedList.append(src.find("a").get_text())
 
     del cleanedList[:6]
+
+    for i in range(0, 100):
+        cleanedList.insert(i + (3 * i), cleanedImgList[i])
 
     queryToSQL(cleanedList)
 

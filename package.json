@@ -9,6 +9,7 @@
   "author": "Mocha(Dong-Hyun Kim)",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "iconv-lite": "^0.4.24",
     "mariadb": "^2.0.5",
