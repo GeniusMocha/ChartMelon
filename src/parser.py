@@ -27,11 +27,11 @@ def queryToSQL(listedChart):
     ## TODO: 각 쿼리문 설명 달기
     cursor.execute(
         "CREATE TABLE chartmelon(_id INT AUTO_INCREMENT PRIMARY KEY,"  
-        " img VARCHAR(1000),"      
-        " name VARCHAR(1000) NOT NULL,"
-        " artist VARCHAR(1000) DEFAULT 'Unknown',"
-        " album VARCHAR(1000)) ENGINE=INNODB;"
-    )
+        " img VARCHAR(8),"      
+        " name VARCHAR(8) NOT NULL,"
+        " artist VARCHAR(8) DEFAULT 'Unknown',"
+        " album VARCHAR(8)) ENGINE=INNODB;"
+    ) # 쿼리 잘 모르는거 티내고 다닌 VARCHAR 데이터 컬럼의 사이즈..
 
     for i in range(0, 400, 4):
         cursor.execute(
