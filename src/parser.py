@@ -3,43 +3,44 @@ from bs4 import BeautifulSoup
 import urllib.request
 import urllib.parse
 import requests
-import pymysql
+import psycopg2 as pg2
 
 def queryToSQL(listedChart):
     # 이 부분 받아올 수 있게 짜 놓은거 가져오기.
-    sql = pymysql.connect( host='localhost', port=3306, user="root",
-                           passwd="mocha00", charset="utf8", autocommit=True )
+    conn = pg2.connect( host='localhost', port=5432, user="postgres",
+                           password="mocha00", database="postgres" )
 
-    cursor = sql.cursor()
+    conn.autocommit = True
+    curs = conn.cursor()
 
     try:
-        cursor.execute("create database MelonChart;")
-    except pymysql.err.ProgrammingError:
+        curs.execute("CREATE DATABASE melonchart")
+    except Exception as e:
         print("\nDB is Already Exist\nKeep Going.\n")
-        cursor.execute("use melonchart;")
-        cursor.execute("drop table chartmelon;")
+        curs.execute("ALTER DATABASE melonchart")
+        curs.execute("DROP TABLE chartmelon")
 
         pass
 
-    cursor.execute("use melonchart;")
+    curs.execute("ALTER DATABASE melonchart")
     
     ## TODO: 각 쿼리문 설명 달기
-    cursor.execute(
-        "CREATE TABLE chartmelon(_id INT AUTO_INCREMENT PRIMARY KEY,"  
+    curs.execute(
+        "CREATE TABLE chartmelon(_id SERIAL PRIMARY KEY,"  
         " img VARCHAR(500),"      
         " name VARCHAR(150) NOT NULL,"
         " artist VARCHAR(150) DEFAULT 'Unknown',"
-        " album VARCHAR(150)) ENGINE=INNODB;"
+        " album VARCHAR(150))"
     )
 
     for i in range(0, 400, 4):
-        cursor.execute(
-            "INSERT INTO chartmelon"
-            " ( img, name, artist, album ) "
+        curs.execute(
+            "INSERT INTO chartmelon "
+            "( img, name, artist, album )"
             "VALUES ( '%s', '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2], listedChart[i + 3])
         )
 
-    sql.close()
+    conn.close()
 
 def parse():
     URL = "https://www.melon.com/chart/index.htm"
@@ -76,5 +77,5 @@ def parse():
 
 def init():
     parse()
-    print("Parsing Success!\nPlease Check MariaDB DataBase!")
+    print("Parsing Success!\nPlease Check PostgreSQL DataBase!")
 init()
