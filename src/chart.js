@@ -2,13 +2,13 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const cors = require("cors");
-const {
-  PythonShell
-} = require("python-shell");
+const { PythonShell } = require("python-shell");
 const path = require("path");
 const mariadb = require("mariadb");
 
-const server = app.listen(8000, checkServer);
+const port = 8000;
+
+const server = app.listen(port, checkServer);
 
 const pool = mariadb.createPool({
   host: "localhost",
@@ -59,22 +59,23 @@ function svCallBack(req, res) {
 
 function checkServer() {
   console.log("서버가 성공적으로 작동되고 있습니다.");
+  console.log(`Port : ${port}`);
 }
 
 function init() {
   PythonShell.run("parser.py", null, pyCallBack);
 
-  app.use(express.static(path.join(__dirname, '/')));
+  app.use(express.static(path.join(__dirname, "/")));
   app.use(cors());
 
   app.get("/thisisparserapi", svCallBack);
-  app.get('/', (req, res) => {
+  app.get("/", (req, res) => {
     fs.readFile("index.html", (error, data) => {
       res.writeHead(200, {
         "Content-Type": "text/html"
       });
       res.end(data);
-    })
+    });
   });
 }
 init();

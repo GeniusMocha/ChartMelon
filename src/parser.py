@@ -6,7 +6,7 @@ import requests
 import pymysql
 
 def queryToSQL(listedChart):
-    # DB Connect
+    # 이 부분 받아올 수 있게 짜 놓은거 가져오기.
     sql = pymysql.connect( host='localhost', port=3306, user="root",
                            passwd="mocha00", charset="utf8", autocommit=True )
 
@@ -14,9 +14,8 @@ def queryToSQL(listedChart):
 
     try:
         cursor.execute("create database MelonChart;")
-    except pymysql.err.ProgrammingError:   # 예외 처리
-        print("\nDB is Already Exist")
-        print("Keep Going Next Part!\n")
+    except pymysql.err.ProgrammingError:
+        print("\nDB is Already Exist\nKeep Going.\n")
         cursor.execute("use melonchart;")
         cursor.execute("drop table chartmelon;")
 
@@ -27,11 +26,11 @@ def queryToSQL(listedChart):
     ## TODO: 각 쿼리문 설명 달기
     cursor.execute(
         "CREATE TABLE chartmelon(_id INT AUTO_INCREMENT PRIMARY KEY,"  
-        " img VARCHAR(8),"      
-        " name VARCHAR(8) NOT NULL,"
-        " artist VARCHAR(8) DEFAULT 'Unknown',"
-        " album VARCHAR(8)) ENGINE=INNODB;"
-    ) # 쿼리 잘 모르는거 티내고 다닌 VARCHAR 데이터 컬럼의 사이즈..
+        " img VARCHAR(500),"      
+        " name VARCHAR(150) NOT NULL,"
+        " artist VARCHAR(150) DEFAULT 'Unknown',"
+        " album VARCHAR(150)) ENGINE=INNODB;"
+    )
 
     for i in range(0, 400, 4):
         cursor.execute(
