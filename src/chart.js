@@ -72,4 +72,4 @@ function init() {
   });
 }
 init();
-setInterval(init, 36000);
+setInterval(init, 3600000);
