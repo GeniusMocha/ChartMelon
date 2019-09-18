@@ -13,32 +13,36 @@ def queryToSQL(listedChart):
     conn.autocommit = True
     curs = conn.cursor()
 
+    sql = "CREATE DATABASE melonchart"
+
     try:
-        curs.execute("CREATE DATABASE melonchart")
+        curs.execute(sql)
     except Exception as e:
         print("\nDB is Already Exist\nKeep Going.\n")
-        curs.execute("ALTER DATABASE melonchart")
-        curs.execute("DROP TABLE chartmelon")
+        sql = "ALTER DATABASE melonchart"
+        curs.execute(sql)
+        
+        sql = "DROP TABLE chartmelon"
+        curs.execute(sql)
 
         pass
 
-    curs.execute("ALTER DATABASE melonchart")
+    sql = "ALTER DATABASE melonchart"
+    curs.execute(sql)
     
     ## TODO: 각 쿼리문 설명 달기
-    curs.execute(
-        "CREATE TABLE chartmelon(_id SERIAL PRIMARY KEY,"  
-        " img VARCHAR(500),"      
-        " name VARCHAR(150) NOT NULL,"
-        " artist VARCHAR(150) DEFAULT 'Unknown',"
-        " album VARCHAR(150))"
-    )
+    sql = "CREATE TABLE chartmelon(_id SERIAL PRIMARY KEY, img VARCHAR(500), \
+           name VARCHAR(150) NOT NULL, \
+           artist VARCHAR(150) DEFAULT 'Unknown', \
+           album VARCHAR(150))"
+
+    curs.execute(sql)
+
+    sql = "INSERT INTO chartmelon ( img, name, artist, album ) \
+           VALUES ( '%s', '%s', '%s', '%s' );"
 
     for i in range(0, 400, 4):
-        curs.execute(
-            "INSERT INTO chartmelon "
-            "( img, name, artist, album )"
-            "VALUES ( '%s', '%s', '%s', '%s' );" %(listedChart[i], listedChart[i + 1], listedChart[i + 2], listedChart[i + 3])
-        )
+        curs.execute(sql, (listedChart[i], listedChart[i + 1], listedChart[i + 2], listedChart[i + 3]))
 
     conn.close()
 
