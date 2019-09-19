@@ -39,7 +39,7 @@ def queryToSQL(listedChart):
     curs.execute(sql)
 
     sql = "INSERT INTO chartmelon ( img, name, artist, album ) \
-           VALUES ( '%s', '%s', '%s', '%s' );"
+           VALUES ( %s, %s, %s, %s );"
 
     for i in range(0, 400, 4):
         curs.execute(sql, (listedChart[i], listedChart[i + 1], listedChart[i + 2], listedChart[i + 3]))
